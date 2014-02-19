@@ -34,6 +34,7 @@ import org.apache.flume.thrift.ThriftSourceProtocol;
 import org.apache.flume.thrift.ThriftFlumeEvent;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TCompactProtocol;
+import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.TFastFramedTransport;
@@ -70,8 +71,16 @@ public class ThriftSource extends AbstractSource implements Configurable,
    * Config param for the port to listen on.
    */
   public static final String CONFIG_PORT = "port";
+  /**
+   * Config param for the source protocol.
+   */
+  public static final String CONFIG_PROTOCOL = "protocol";
+
+  public static final String COMPACT_PROTOCOL = "compact";
+  public static final String BINARY_PROTOCOL = "binary";
   private Integer port;
   private String bindAddress;
+  private String protocol;
   private int maxThreads = 0;
   private SourceCounter sourceCounter;
   private TServer server;
@@ -87,6 +96,9 @@ public class ThriftSource extends AbstractSource implements Configurable,
     bindAddress = context.getString(CONFIG_BIND);
     Preconditions.checkNotNull(bindAddress, "Bind address must be specified " +
       "for Thrift Source.");
+
+    protocol = context.getString(CONFIG_PROTOCOL, COMPACT_PROTOCOL);
+    Preconditions.checkArgument((protocol.equals(COMPACT_PROTOCOL) || protocol.equals(BINARY_PROTOCOL)), "The protocol must be: compact or binary, not " + protocol);
 
     try {
       maxThreads = context.getInteger(CONFIG_THREADS, 0);
@@ -168,7 +180,11 @@ public class ThriftSource extends AbstractSource implements Configurable,
 
     try {
 
-      args.protocolFactory(new TCompactProtocol.Factory());
+      if (protocol.equals(BINARY_PROTOCOL)) {
+        args.protocolFactory(new TBinaryProtocol.Factory());
+      } else {
+        args.protocolFactory(new TCompactProtocol.Factory());
+      }
       args.inputTransportFactory(new TFastFramedTransport.Factory());
       args.outputTransportFactory(new TFastFramedTransport.Factory());
       args.processor(new ThriftSourceProtocol
