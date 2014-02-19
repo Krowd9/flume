@@ -71,7 +71,9 @@ limitations under the License.
     <profile>
       <id>hadoop-1.0</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>!hadoop.profile</name>
+        </property>
       </activation>
       <properties>
         <hadoop.version>1.0.1</hadoop.version>
@@ -90,20 +92,6 @@ limitations under the License.
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-test</artifactId>
             <version>${hadoop.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.hbase</groupId>
-            <artifactId>hbase</artifactId>
-            <version>${hbase.version}</version>
-            <optional>true</optional>
-          </dependency>
-
-          <dependency>
-            <groupId>org.apache.hbase</groupId>
-            <artifactId>hbase</artifactId>
-            <version>${hbase.version}</version>
-            <classifier>tests</classifier>
-            <scope>test</scope>
           </dependency>
         </dependencies>
       </dependencyManagement>
@@ -155,92 +143,8 @@ limitations under the License.
             <artifactId>hadoop-auth</artifactId>
             <version>${hadoop.version}</version>
           </dependency>
-          <dependency>
-            <groupId>org.apache.hbase</groupId>
-            <artifactId>hbase</artifactId>
-            <version>${hbase.version}</version>
-            <optional>true</optional>
-          </dependency>
-
-          <dependency>
-            <groupId>org.apache.hbase</groupId>
-            <artifactId>hbase</artifactId>
-            <version>${hbase.version}</version>
-            <classifier>tests</classifier>
-            <scope>test</scope>
-          </dependency>
         </dependencies>
       </dependencyManagement>
-
-    </profile>
-
-    <profile>
-      <id>hbase-96</id>
-      <activation>
-        <property>
-          <name>hbase.profile</name>
-          <value>96</value>
-        </property>
-      </activation>
-      <properties>
-        <hadoop.version>2.2.0</hadoop.version>
-        <hbase.version>0.96.1.1-hadoop2</hbase.version>
-        <hadoop.common.artifact.id>hadoop-common</hadoop.common.artifact.id>
-        <thrift.version>0.8.0</thrift.version>
-      </properties>
-      <dependencyManagement>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>${hadoop.common.artifact.id}</artifactId>
-            <version>${hadoop.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-hdfs</artifactId>
-            <version>${hadoop.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-minicluster</artifactId>
-            <version>${hadoop.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-client</artifactId>
-            <version>${hadoop.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-annotations</artifactId>
-            <version>${hadoop.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-auth</artifactId>
-            <version>${hadoop.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.hbase</groupId>
-            <artifactId>hbase-client</artifactId>
-            <version>${hbase.version}</version>
-            <optional>true</optional>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.hbase</groupId>
-            <artifactId>hbase-testing-util</artifactId>
-            <version>${hbase.version}</version>
-            <scope>test</scope>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-            <version>3.4.5</version>
-            <scope>test</scope>
-          </dependency>
-        </dependencies>
-      </dependencyManagement>
-
     </profile>
 
     <profile>
@@ -935,6 +839,20 @@ limitations under the License.
         <groupId>joda-time</groupId>
         <artifactId>joda-time</artifactId>
         <version>2.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.hbase</groupId>
+        <artifactId>hbase</artifactId>
+        <version>${hbase.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.hbase</groupId>
+        <artifactId>hbase</artifactId>
+        <version>${hbase.version}</version>
+        <classifier>tests</classifier>
+        <scope>test</scope>
       </dependency>
 
       <dependency>
